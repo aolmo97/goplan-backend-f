@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  COMPANY
+  ADMIN
+}
+
+enum PlanStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+}
+
+enum MatchStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String   @unique
+  password  String?
+  googleId  String?  @unique
+  avatar    String?
+  bio       String?
+  city      String?
+  role      Role     @default(USER)
+  interests String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  plans            Plan[]            @relation("PlanCreator")
+  matches          Match[]
+  chatMembers      ChatMember[]
+  messages         Message[]
+  comments         Comment[]
+  following        Follow[]          @relation("Follower")
+  followers        Follow[]          @relation("Following")
+  events           Event[]           @relation("CompanyEvents")
+  eventAttendances EventAttendance[]
+}
+
+model Plan {
+  id              String     @id @default(cuid())
+  title           String
+  description     String
+  category        String
+  date            DateTime
+  location        String
+  locationDetails String?
+  maxPeople       Int
+  isPrivate       Boolean    @default(false)
+  status          PlanStatus @default(ACTIVE)
+  coverImage      String?
+  creatorId       String
+  creator         User       @relation("PlanCreator", fields: [creatorId], references: [id])
+  matches         Match[]
+  chat            Chat?
+  comments        Comment[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Match {
+  id        String      @id @default(cuid())
+  userId    String
+  planId    String
+  status    MatchStatus @default(PENDING)
+  user      User        @relation(fields: [userId], references: [id])
+  plan      Plan        @relation(fields: [planId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@unique([userId, planId])
+}
+
+model Chat {
+  id        String       @id @default(cuid())
+  planId    String?      @unique
+  plan      Plan?        @relation(fields: [planId], references: [id])
+  name      String?
+  members   ChatMember[]
+  messages  Message[]
+  createdAt DateTime     @default(now())
+}
+
+model ChatMember {
+  id         String    @id @default(cuid())
+  chatId     String
+  userId     String
+  chat       Chat      @relation(fields: [chatId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+  lastSeenAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@unique([chatId, userId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  chatId    String
+  senderId  String
+  content   String
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  sender    User     @relation(fields: [senderId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  planId    String
+  userId    String
+  text      String
+  plan      Plan     @relation(fields: [planId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id            String            @id @default(cuid())
+  title         String
+  description   String
+  location      String
+  date          DateTime
+  capacity      Int?
+  price         String?           @default("FREE")
+  imageUrl      String?
+  organizerLogo String?
+  isPromoted    Boolean           @default(false)
+  companyId     String
+  company       User              @relation("CompanyEvents", fields: [companyId], references: [id])
+  attendances   EventAttendance[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model EventAttendance {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  status    String
+  event     Event    @relation(fields: [eventId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    User     @relation("Follower", fields: [followerId], references: [id])
+  following   User     @relation("Following", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+}
