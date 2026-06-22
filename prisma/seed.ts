@@ -12,59 +12,59 @@ async function main() {
   const [carlos, elena, mark, julia, sophia, pulse] = await Promise.all([
     prisma.user.upsert({
       where: { email: 'carlos@goplan.app' },
-      update: {},
+      update: { avatar: 'https://i.pravatar.cc/300?img=12' },
       create: {
         username: 'Carlos García',
         email: 'carlos@goplan.app',
         password,
         city: 'Madrid',
         role: 'USER',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDhhmH9xqRZwMxV0A2OBUNmnFC2jADVOCkw3E3b565HMZ_aq55SiryHrR84tyXDn6wfLVIrnMKdEAwEGYhKG_dC9uR1bQ0DPlSMw11EGCwlFwYN0IMGhlArfzUvZ_xj8T0nFJiJSZHzl6zZppYz7IM2vTZoc3Hw5flnAQMjbswZHknFg-3vqtsnKmYBXfEl3ZpOoZ3xw_MxHGV7ySz1dZiCAw-N2FrBRHopuVkq-9vcY9HE17KSGMHhmY8odODq736tCqaPEA39CcPV',
+        avatar: 'https://i.pravatar.cc/300?img=12',
         interests: ['Culture', 'Food', 'Outdoors']
       }
     }),
     prisma.user.upsert({
       where: { email: 'elena@goplan.app' },
-      update: {},
+      update: { avatar: 'https://i.pravatar.cc/300?img=5' },
       create: {
         username: 'Elena Petrova',
         email: 'elena@goplan.app',
         password,
         city: 'Madrid',
         role: 'USER',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBrEkSQSp_gT7gPBssGNjbV2bk0r29g806FhmVvocHQGe-t8WR3RjjWEb1v5JP4MLqaD7lAUF5SsBmJ8AmeiGXYDxC4ATQSTZBv6pxYwlQinc0V3fiCQReW3fa01F2i4TV1gCt4hn5GTduSHpLxGdbyGQKLO51WqgfSZmggvU7O08slOx_w89xuonuSD3OUY7Q2QlLrXNS9oTbZY09pve0AylpKleAFzwiQKMeiF-MgjuO2auIuGcyEJ9Rj6bg70zdIXocg8CpLgSZU',
+        avatar: 'https://i.pravatar.cc/300?img=5',
         interests: ['Outdoors', 'Nature', 'Hiking']
       }
     }),
     prisma.user.upsert({
       where: { email: 'mark@goplan.app' },
-      update: {},
+      update: { avatar: 'https://i.pravatar.cc/300?img=33' },
       create: {
         username: 'Mark Thompson',
         email: 'mark@goplan.app',
         password,
         city: 'Austin',
         role: 'USER',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCg8qS5DznLc1dh6Brcw4qFwASREpwu9GgTQqwXVRaIL_hbeQhd1IqGW99dtogpPfWDcJ4qEY7ty90IFNqdEOYjMcUrKCSzDiXeHc8P9cls67P2acnIMExAhrl2n8xhj1xTTqQIIr_WoC6OGNMOJEWwrBbvoutR2KkleaHqjepaT_cCG6PD3aMwXUOxrW0-9e0_o-icuXsLCSHSWwnagWQDmy_mJ5_Qg1EDgMSPwdZUwOwpUavWyYEzKA1twuaTH0HsubOcYBhA9Jnz',
+        avatar: 'https://i.pravatar.cc/300?img=33',
         interests: ['Sports', 'Networking', 'Tech']
       }
     }),
     prisma.user.upsert({
       where: { email: 'julia@goplan.app' },
-      update: {},
+      update: { avatar: 'https://i.pravatar.cc/300?img=25' },
       create: {
         username: 'Julia Santos',
         email: 'julia@goplan.app',
         password,
         city: 'Madrid',
         role: 'USER',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTkj8MBBQg2EiLvhZPMfdUkCczcxzT1L2AKY8A2jqmPs-TdrpSaEBRw_4yfvARMxQOHCoVHc7q5aSwlihAuobFCQmuoS_0occUzUTZe4_yxNBu28577-3oMJT3K8VEy3gZY9koYJB-LLZUXocZ7q2eCv0u7BDxbm5_Uk1HakHXpWxlA5wd4isTuiE4k3a8L_L5x0FFADFMfhfQbvUccVup6vfiSDDy0m2iFX9H16RwHgFrd0LqkvbPVSgDYQSwYRxFWRqlyAXp1piu',
+        avatar: 'https://i.pravatar.cc/300?img=25',
         interests: ['Culture', 'Concerts', 'Food']
       }
     }),
     prisma.user.upsert({
       where: { email: 'sophia@goplan.app' },
-      update: {},
+      update: { avatar: 'https://i.pravatar.cc/300?img=47' },
       create: {
         username: 'Sophia Rivera',
         email: 'sophia@goplan.app',
@@ -72,7 +72,7 @@ async function main() {
         city: 'Austin, Texas',
         role: 'USER',
         bio: "Always looking for new coffee spots and weekend hiking trails. I believe the best connections happen away from the screen. Let's explore the city together!",
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCr8AM4JiMQTHf7zkEDVch8MDRL6QT2jg-S-OFYVGWNppcHLvHhTbuEhAta31ds5tWvbMu5SQzjHAytvem-jqUxkXmclbrJXc6AlrhQfYSHw2fqjEWDTuaCTzKGctXX7JQ0211gsADTNfGP_rUxYwhTNG7O1QzcPWI2Gl0vDOWeB5Zbsygb_089Vo-CJveTSacUX-ITLBGWLGszSMnuj3gV-JV5BWIWE5j2hxZ4_MsPD5US8DacolXS2AXyx9LJ0K_1R9f86WkJGC94',
+        avatar: 'https://i.pravatar.cc/300?img=47',
         interests: ['Hiking', 'Latte Art', 'Golden Hour', 'Indie Rock', 'Pottery']
       }
     }),
@@ -93,7 +93,7 @@ async function main() {
   // Plans
   const plan1 = await prisma.plan.upsert({
     where: { id: 'plan-1' },
-    update: {},
+    update: { coverImage: 'https://picsum.photos/seed/succulent/800/500' },
     create: {
       id: 'plan-1',
       title: 'Sunset Succulent Planting & Wine Night',
@@ -104,7 +104,7 @@ async function main() {
       locationDetails: '742 Mission St, San Francisco, CA 94103',
       maxPeople: 20,
       isPrivate: false,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCuKDMiJwn-V5nQ3V3Iumi2uy6rVHhUKZYiR6SkoPuA_k61dW5x1FbziDOquDSZ5c0UkGlYsC0oprlzatARiebryyOSl7nQi6ykIZlxTslmQPlL3ux9Tjb3UEFGtCcasbhi6xTaPWiyrBrD90LI8c5KhC--oIlnZgbeSG3oYg5o4irGJrGbqSoq6smf0cnxmM5Lr--u9wp6z10xmYWZuJl8Vpdu8EcE_5HzYIO9wU3w6wseozioMBSK99aBYKUr-65spAr9GJ2gyh2e',
+      coverImage: 'https://picsum.photos/seed/succulent/800/500',
       creatorId: carlos.id,
       chat: {
         create: {
@@ -117,7 +117,7 @@ async function main() {
 
   const plan2 = await prisma.plan.upsert({
     where: { id: 'plan-2' },
-    update: {},
+    update: { coverImage: 'https://picsum.photos/seed/artgallery/800/500' },
     create: {
       id: 'plan-2',
       title: 'Modern Art Gallery Tour',
@@ -128,7 +128,7 @@ async function main() {
       locationDetails: 'C. de Santa Isabel, 52, Madrid 28012',
       maxPeople: 5,
       isPrivate: false,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXV2cQOHUc5FJziC8orF97zXonUmEQNgG-YdS75PO0CKlok8xyxdmjQYzFLf_hDh8V6ebH6RivVydsRh4XlX5fc4iQBL4O8PdlwrS1qt8VhcO_i7ilVZi4o0qUS6roTHnmPhI9k4VzHm9x-ZCH_lbGVZuhl56ioBDowuTlkZEbGJDI59KaiahmWhV3MQf9D3r9ZEh04MxRarw5ivXKuY5kXWznJRb3n3_-aPQjcGVm4QHR7tid74fzjH0lCCDeI-dbvwbTkMBZv1Cd',
+      coverImage: 'https://picsum.photos/seed/artgallery/800/500',
       creatorId: carlos.id,
       chat: {
         create: {
@@ -141,7 +141,7 @@ async function main() {
 
   const plan3 = await prisma.plan.upsert({
     where: { id: 'plan-3' },
-    update: {},
+    update: { coverImage: 'https://picsum.photos/seed/picnicpark/800/500' },
     create: {
       id: 'plan-3',
       title: 'Picnic & Frisbee in Retiro',
@@ -152,7 +152,7 @@ async function main() {
       locationDetails: 'Pl. de la Independencia, 7, Madrid 28001',
       maxPeople: 12,
       isPrivate: false,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCy-C-oPnX5ZGk00oVKr6zdlBITWLm1b3VF_gJJku3OdPVWHcSwOWIWTVG_Z-H3nYZvNpXhhzmsH7-YaB0UMzYZPuRULac1jb944UD-gT--aT10Y16wLtfGOl_Jny3-O196Wlxw4x1bOOplJlKvfGRaM4FViDGmjS0DvbaCcS4NVwNwrhEtER2KT23Qj2Vitb6LBh5oFjwPdMPNnzLoksWvla3WaRM-WeWNLWewlhG_jQaZYcZZ01bHR1zPgt8Ic7kuNSU7yOQbH1yS',
+      coverImage: 'https://picsum.photos/seed/picnicpark/800/500',
       creatorId: elena.id,
       chat: {
         create: {
@@ -173,7 +173,7 @@ async function main() {
       date: new Date('2026-08-15T10:00:00.000Z'),
       location: 'Museo del Prado, Madrid',
       maxPeople: 8,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXV2cQOHUc5FJziC8orF97zXonUmEQNgG-YdS75PO0CKlok8xyxdmjQYzFLf_hDh8V6ebH6RivVydsRh4XlX5fc4iQBL4O8PdlwrS1qt8VhcO_i7ilVZi4o0qUS6roTHnmPhI9k4VzHm9x-ZCH_lbGVZuhl56ioBDowuTlkZEbGJDI59KaiahmWhV3MQf9D3r9ZEh04MxRarw5ivXKuY5kXWznJRb3n3_-aPQjcGVm4QHR7tid74fzjH0lCCDeI-dbvwbTkMBZv1Cd',
+      coverImage: 'https://picsum.photos/seed/pradomuseum/800/500',
       creatorId: julia.id
     },
     {
@@ -184,7 +184,7 @@ async function main() {
       date: new Date('2026-08-20T08:00:00.000Z'),
       location: 'Parque del Retiro, Madrid',
       maxPeople: 15,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCy-C-oPnX5ZGk00oVKr6zdlBITWLm1b3VF_gJJku3OdPVWHcSwOWIWTVG_Z-H3nYZvNpXhhzmsH7-YaB0UMzYZPuRULac1jb944UD-gT--aT10Y16wLtfGOl_Jny3-O196Wlxw4x1bOOplJlKvfGRaM4FViDGmjS0DvbaCcS4NVwNwrhEtER2KT23Qj2Vitb6LBh5oFjwPdMPNnzLoksWvla3WaRM-WeWNLWewlhG_jQaZYcZZ01bHR1zPgt8Ic7kuNSU7yOQbH1yS',
+      coverImage: 'https://picsum.photos/seed/yogapark/800/500',
       creatorId: julia.id
     },
     {
@@ -195,7 +195,7 @@ async function main() {
       date: new Date('2026-09-01T11:00:00.000Z'),
       location: 'Mercado de San Miguel, Madrid',
       maxPeople: 10,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC7-9Gq6yoPOmbVPObF-GV_8QISWTV2Js6tmdkZArjRjnet3N2raT7uPbWxojOgSZB8UmjzmMOxmToetfhKzaKgc86T__LbQvlgHJl-nDBn8EAz3KKmu-S5mUn4AZNNGo5o9TXiBslJhc8aAEE2wVdfAb5TMqF8pXv35_SMldy9kQmzuGdBfEGVzlgDWdRk3XFpys34-HfOgjrXIerjcOJtQC-gN12XzDAM47R5t_vWDjVfYzyDQCeAoFvl3ILRa7_lCHY5jtrwrG7v',
+      coverImage: 'https://picsum.photos/seed/foodmarket/800/500',
       creatorId: mark.id
     },
     {
@@ -206,7 +206,7 @@ async function main() {
       date: new Date('2026-09-07T07:00:00.000Z'),
       location: 'Sierra de Guadarrama',
       maxPeople: 12,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAnxSZQnEsqB1qqHIRmHJlayiMGy7qmwxd5jSkaN5x-H1liGnUMPgEZWSfV2hC4QPqs2-d0EMq1AOysBG8bJDSijfxecMYOhzHc_UNCmhhq-S0ucsx3zIwKI5s00QboCUELHCWAXj8d4WRGbEzGw6eEiiVyFaNYnstIJAvuPSuxKou_KJjCXDTdlhXae_a5CLPtJas_HKynxI35sJKiJXLOiq1wULc_yqdk3EXOXSYziJAfLl6ywahnsT7mYnhW9lCnKjxHXSvvB8k7',
+      coverImage: 'https://picsum.photos/seed/trailhike/800/500',
       creatorId: mark.id
     },
     {
@@ -217,7 +217,7 @@ async function main() {
       date: new Date('2026-09-15T19:00:00.000Z'),
       location: 'WeWork Gran Vía, Madrid',
       maxPeople: 30,
-      coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDhhmH9xqRZwMxV0A2OBUNmnFC2jADVOCkw3E3b565HMZ_aq55SiryHrR84tyXDn6wfLVIrnMKdEAwEGYhKG_dC9uR1bQ0DPlSMw11EGCwlFwYN0IMGhlArfzUvZ_xj8T0nFJiJSZHzl6zZppYz7IM2vTZoc3Hw5flnAQMjbswZHknFg-3vqtsnKmYBXfEl3ZpOoZ3xw_MxHGV7ySz1dZiCAw-N2FrBRHopuVkq-9vcY9HE17KSGMHhmY8odODq736tCqaPEA39CcPV',
+      coverImage: 'https://picsum.photos/seed/technetwork/800/500',
       creatorId: julia.id
     }
   ];
@@ -225,7 +225,7 @@ async function main() {
   for (const swipePlan of swipePlans) {
     await prisma.plan.upsert({
       where: { id: swipePlan.id },
-      update: {},
+      update: { coverImage: swipePlan.coverImage },
       create: {
         ...swipePlan,
         chat: {
@@ -285,7 +285,7 @@ async function main() {
   await Promise.all([
     prisma.event.upsert({
       where: { id: 'event-1' },
-      update: {},
+      update: { imageUrl: 'https://picsum.photos/seed/electronicfest/800/500' },
       create: {
         id: 'event-1',
         title: 'Electronic Beats Festival',
@@ -294,14 +294,14 @@ async function main() {
         date: new Date('2026-08-24T18:00:00.000Z'),
         capacity: 5000,
         price: '€45',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDhhmH9xqRZwMxV0A2OBUNmnFC2jADVOCkw3E3b565HMZ_aq55SiryHrR84tyXDn6wfLVIrnMKdEAwEGYhKG_dC9uR1bQ0DPlSMw11EGCwlFwYN0IMGhlArfzUvZ_xj8T0nFJiJSZHzl6zZppYz7IM2vTZoc3Hw5flnAQMjbswZHknFg-3vqtsnKmYBXfEl3ZpOoZ3xw_MxHGV7ySz1dZiCAw-N2FrBRHopuVkq-9vcY9HE17KSGMHhmY8odODq736tCqaPEA39CcPV',
+        imageUrl: 'https://picsum.photos/seed/electronicfest/800/500',
         isPromoted: true,
         companyId: pulse.id
       }
     }),
     prisma.event.upsert({
       where: { id: 'event-2' },
-      update: {},
+      update: { imageUrl: 'https://picsum.photos/seed/streetfoodfest/800/500' },
       create: {
         id: 'event-2',
         title: 'Street Food Festival',
@@ -310,14 +310,14 @@ async function main() {
         date: new Date('2026-09-05T12:00:00.000Z'),
         capacity: 2000,
         price: 'FREE',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC7-9Gq6yoPOmbVPObF-GV_8QISWTV2Js6tmdkZArjRjnet3N2raT7uPbWxojOgSZB8UmjzmMOxmToetfhKzaKgc86T__LbQvlgHJl-nDBn8EAz3KKmu-S5mUn4AZNNGo5o9TXiBslJhc8aAEE2wVdfAb5TMqF8pXv35_SMldy9kQmzuGdBfEGVzlgDWdRk3XFpys34-HfOgjrXIerjcOJtQC-gN12XzDAM47R5t_vWDjVfYzyDQCeAoFvl3ILRa7_lCHY5jtrwrG7v',
+        imageUrl: 'https://picsum.photos/seed/streetfoodfest/800/500',
         isPromoted: false,
         companyId: pulse.id
       }
     }),
     prisma.event.upsert({
       where: { id: 'event-3' },
-      update: {},
+      update: { imageUrl: 'https://picsum.photos/seed/indiefilm/800/500' },
       create: {
         id: 'event-3',
         title: 'Indie Film Screening Night',
@@ -326,7 +326,7 @@ async function main() {
         date: new Date('2026-09-20T21:00:00.000Z'),
         capacity: 300,
         price: '€12',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXV2cQOHUc5FJziC8orF97zXonUmEQNgG-YdS75PO0CKlok8xyxdmjQYzFLf_hDh8V6ebH6RivVydsRh4XlX5fc4iQBL4O8PdlwrS1qt8VhcO_i7ilVZi4o0qUS6roTHnmPhI9k4VzHm9x-ZCH_lbGVZuhl56ioBDowuTlkZEbGJDI59KaiahmWhV3MQf9D3r9ZEh04MxRarw5ivXKuY5kXWznJRb3n3_-aPQjcGVm4QHR7tid74fzjH0lCCDeI-dbvwbTkMBZv1Cd',
+        imageUrl: 'https://picsum.photos/seed/indiefilm/800/500',
         isPromoted: false,
         companyId: pulse.id
       }

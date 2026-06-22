@@ -7,6 +7,7 @@ import matchesRoutes from './routes/matches.routes';
 import chatsRoutes from './routes/chats.routes';
 import usersRoutes from './routes/users.routes';
 import eventsRoutes from './routes/events.routes';
+import uploadsRoutes from './routes/uploads.routes';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/api/matches', matchesRoutes);
 app.use('/api/chats', chatsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/events', eventsRoutes);
+app.use('/api/uploads', uploadsRoutes);
 
 app.use(errorHandler);
 
