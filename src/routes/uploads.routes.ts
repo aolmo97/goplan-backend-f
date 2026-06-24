@@ -18,18 +18,23 @@ router.post('/', authenticate, upload.single('file'), async (req: Request, res: 
     return;
   }
 
-  const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder: 'goplan', resource_type: 'image' },
-      (error, result) => {
-        if (error || !result) return reject(error);
-        resolve(result);
-      }
-    );
-    stream.end(req.file!.buffer);
-  });
-
-  res.json({ url: result.secure_url });
+  try {
+    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: 'goplan', resource_type: 'image' },
+        (error, result) => {
+          if (error || !result) return reject(error ?? new Error('No result from Cloudinary'));
+          resolve(result);
+        }
+      );
+      stream.on('error', reject);
+      stream.end(req.file!.buffer);
+    });
+    res.json({ url: result.secure_url });
+  } catch (err: any) {
+    console.error('Cloudinary upload error:', err?.message || err);
+    res.status(500).json({ error: 'Upload failed', detail: err?.message });
+  }
 });
 
 export default router;
