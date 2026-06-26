@@ -56,3 +56,13 @@ export async function deletePlan(req: Request, res: Response, next: NextFunction
     next(err);
   }
 }
+
+export async function getPlanRequests(req: Request, res: Response, next: NextFunction) {
+  try {
+    const requests = await plansService.getPlanRequests(req.params.id, req.user!.id);
+    res.json(requests);
+  } catch (err: any) {
+    if (err.message === 'Forbidden') return res.status(403).json({ error: err.message });
+    next(err);
+  }
+}

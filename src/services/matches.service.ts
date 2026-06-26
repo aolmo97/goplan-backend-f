@@ -114,12 +114,19 @@ export async function updateMatch(
   const match = await prisma.match.findUniqueOrThrow({
     where: { id: matchId },
     include: {
-      plan: { select: { id: true, title: true, coverImage: true, creatorId: true } }
+      plan: {
+        select: { id: true, title: true, coverImage: true, creatorId: true, maxPeople: true },
+        include: { matches: { where: { status: 'ACCEPTED' } } }
+      }
     }
   });
 
   if (match.plan.creatorId !== currentUserId) {
     throw new Error('Only the plan creator can update match requests');
+  }
+
+  if (status === 'ACCEPTED' && (match.plan as any).matches.length >= match.plan.maxPeople) {
+    throw new Error('Plan is full');
   }
 
   const updated = await prisma.match.update({ where: { id: matchId }, data: { status } });

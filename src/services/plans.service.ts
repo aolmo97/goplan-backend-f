@@ -35,6 +35,7 @@ function mapPlanToDTO(plan: any, currentUserId: string, isFollowing = false) {
     joinedCount: joinedUsers.length,
     spotsLeft: plan.maxPeople - joinedUsers.length,
     isPrivate: plan.isPrivate,
+    isOwner: plan.creatorId === currentUserId,
     creator: {
       name: plan.creator.username,
       avatar: plan.creator.avatar || '',
@@ -219,6 +220,25 @@ export async function deletePlan(planId: string, currentUserId: string) {
   const plan = await prisma.plan.findUniqueOrThrow({ where: { id: planId } });
   if (plan.creatorId !== currentUserId) throw new Error('Forbidden');
   await prisma.plan.update({ where: { id: planId }, data: { status: 'CANCELLED' } });
+}
+
+export async function getPlanRequests(planId: string, currentUserId: string) {
+  const plan = await prisma.plan.findUniqueOrThrow({ where: { id: planId } });
+  if (plan.creatorId !== currentUserId) throw new Error('Forbidden');
+
+  const requests = await prisma.match.findMany({
+    where: { planId, status: 'PENDING' },
+    include: { user: { select: { id: true, username: true, avatar: true } } },
+    orderBy: { createdAt: 'asc' }
+  });
+
+  return requests.map(r => ({
+    matchId: r.id,
+    userId: r.userId,
+    username: r.user.username,
+    avatar: r.user.avatar || '',
+    requestedAt: r.createdAt.toISOString()
+  }));
 }
 
 export { mapPlanToDTO, PLAN_INCLUDE };
