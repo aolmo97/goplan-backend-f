@@ -79,10 +79,12 @@ export async function getFeed(currentUserId: string, params: {
 }) {
   const { category, page = 1, limit = 10 } = params;
   const skip = (page - 1) * limit;
+  const now = new Date();
 
   const where = {
     status: 'ACTIVE' as const,
     creatorId: { not: currentUserId },
+    date: { gte: now },
     ...(category && { category })
   };
 
@@ -90,7 +92,7 @@ export async function getFeed(currentUserId: string, params: {
     prisma.plan.findMany({ where, include: PLAN_INCLUDE, orderBy: { date: 'asc' }, skip, take: limit }),
     prisma.plan.count({ where }),
     prisma.plan.findMany({
-      where: { status: 'ACTIVE', creatorId: { not: currentUserId } },
+      where: { status: 'ACTIVE', creatorId: { not: currentUserId }, date: { gte: now } },
       include: PLAN_INCLUDE,
       orderBy: { matches: { _count: 'desc' } },
       take: 5
@@ -108,6 +110,8 @@ export async function getFeed(currentUserId: string, params: {
 }
 
 export async function getSwipeFeed(currentUserId: string) {
+  const now = new Date();
+
   const swiped = await prisma.match.findMany({
     where: { userId: currentUserId },
     select: { planId: true }
@@ -118,10 +122,12 @@ export async function getSwipeFeed(currentUserId: string) {
     where: {
       status: 'ACTIVE',
       creatorId: { not: currentUserId },
+      date: { gte: now },
       ...(excludeIds.length > 0 && { id: { notIn: excludeIds } })
     },
     include: PLAN_INCLUDE,
-    take: 10
+    orderBy: { date: 'asc' },
+    take: 20
   });
 
   const followingIds = await getFollowingIds(currentUserId);

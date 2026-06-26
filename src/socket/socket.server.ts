@@ -34,7 +34,9 @@ export function initSocketServer(io: Server) {
           include: { sender: true }
         });
 
-        io.to(`chat:${data.chatId}`).emit('chat:message', {
+        // Use socket.to() (not io.to()) so the sender is excluded —
+        // the sender already adds the message optimistically on the client side.
+        socket.to(`chat:${data.chatId}`).emit('chat:message', {
           id: message.id,
           senderName: message.sender.username,
           senderAvatar: message.sender.avatar || '',

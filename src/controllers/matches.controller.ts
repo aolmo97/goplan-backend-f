@@ -33,6 +33,7 @@ export async function updateMatch(req: Request, res: Response, next: NextFunctio
     res.json(match);
   } catch (err: any) {
     if (err.message.includes('creator')) return res.status(403).json({ error: err.message });
+    if (err.message === 'Plan is full') return res.status(409).json({ error: err.message });
     next(err);
   }
 }
