@@ -60,6 +60,7 @@ export async function getChats(userId: string) {
       name,
       coverImage,
       membersCount: chat.members.length,
+      ...(chat.plan?.id && { planId: chat.plan.id }),
       ...(chat.plan?.date && { nextEvent: chat.plan.date.toISOString() }),
       lastMessageText: lastMsg?.content || '',
       lastMessageTime: lastMsg ? formatMessageTime(lastMsg.createdAt) : '',
