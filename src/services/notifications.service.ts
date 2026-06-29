@@ -1,10 +1,10 @@
 import * as admin from 'firebase-admin';
 
-// Initialize Firebase Admin SDK once
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(require('../../firebase-service-account.json'))
-  });
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (raw) {
+    admin.initializeApp({ credential: admin.credential.cert(JSON.parse(raw)) });
+  }
 }
 
 export async function sendPushNotification(
