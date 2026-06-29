@@ -114,3 +114,8 @@ export async function getJoinedPlans(userId: string) {
   });
   return matches.map(m => mapPlanToDTO(m.plan, userId, false));
 }
+
+export async function saveFcmToken(userId: string, fcmToken: string): Promise<void> {
+  await prisma.user.update({ where: { id: userId }, data: { fcmToken } });
+  console.log(`[FCM] Token saved for user ${userId}: ${fcmToken.slice(0, 20)}...`);
+}
