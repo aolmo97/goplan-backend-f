@@ -23,6 +23,17 @@ export async function getMatches(req: Request, res: Response, next: NextFunction
   } catch (err) { next(err); }
 }
 
+export async function leavePlan(req: Request, res: Response, next: NextFunction) {
+  try {
+    await matchesService.leavePlan(req.user!.id, req.params.planId);
+    res.status(204).send();
+  } catch (err: any) {
+    if (err.message === 'Match not found') return res.status(404).json({ error: err.message });
+    if (err.message === 'Creator cannot leave their own plan') return res.status(400).json({ error: err.message });
+    next(err);
+  }
+}
+
 export async function updateMatch(req: Request, res: Response, next: NextFunction) {
   try {
     const { status } = req.body;

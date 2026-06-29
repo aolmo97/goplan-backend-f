@@ -75,18 +75,25 @@ async function getFollowingIds(userId: string): Promise<Set<string>> {
 
 export async function getFeed(currentUserId: string, params: {
   category?: string;
+  search?: string;
   page?: number;
   limit?: number;
 }) {
-  const { category, page = 1, limit = 10 } = params;
+  const { category, search, page = 1, limit = 10 } = params;
   const skip = (page - 1) * limit;
   const now = new Date();
 
-  const where = {
+  const where: Record<string, unknown> = {
     status: 'ACTIVE' as const,
     creatorId: { not: currentUserId },
     date: { gte: now },
-    ...(category && { category })
+    ...(category && { category: { equals: category, mode: 'insensitive' } }),
+    ...(search && {
+      OR: [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } }
+      ]
+    })
   };
 
   const [plans, total, trending, followingIds] = await Promise.all([
@@ -239,6 +246,28 @@ export async function getPlanRequests(planId: string, currentUserId: string) {
     avatar: r.user.avatar || '',
     requestedAt: r.createdAt.toISOString()
   }));
+}
+
+const COMMENT_SELECT = {
+  id: true,
+  text: true,
+  createdAt: true,
+  user: { select: { id: true, username: true, avatar: true } }
+};
+
+export async function getComments(planId: string) {
+  return prisma.comment.findMany({
+    where: { planId },
+    select: COMMENT_SELECT,
+    orderBy: { createdAt: 'asc' }
+  });
+}
+
+export async function addComment(planId: string, userId: string, text: string) {
+  return prisma.comment.create({
+    data: { planId, userId, text },
+    select: COMMENT_SELECT
+  });
 }
 
 export { mapPlanToDTO, PLAN_INCLUDE };

@@ -117,6 +117,27 @@ export async function getMatches(userId: string) {
  * Allow the plan creator to manually accept or reject a PENDING match request.
  * On ACCEPTED: add the user to the plan chat and emit match:new to both users.
  */
+/**
+ * Allow an ACCEPTED user to leave a plan they joined.
+ * Deletes the Match and removes them from the plan's ChatMember.
+ */
+export async function leavePlan(userId: string, planId: string) {
+  const match = await prisma.match.findUnique({
+    where: { userId_planId: { userId, planId } },
+    include: { plan: { select: { creatorId: true } } }
+  });
+
+  if (!match || match.status !== 'ACCEPTED') throw new Error('Match not found');
+  if (match.plan.creatorId === userId) throw new Error('Creator cannot leave their own plan');
+
+  await prisma.match.delete({ where: { userId_planId: { userId, planId } } });
+
+  const chat = await prisma.chat.findUnique({ where: { planId } });
+  if (chat) {
+    await prisma.chatMember.deleteMany({ where: { chatId: chat.id, userId } });
+  }
+}
+
 export async function updateMatch(
   matchId: string,
   currentUserId: string,
