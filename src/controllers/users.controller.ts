@@ -42,3 +42,14 @@ export async function getJoinedPlans(req: Request, res: Response, next: NextFunc
     res.json(await usersService.getJoinedPlans(req.user!.id));
   } catch (err) { next(err); }
 }
+
+export async function saveFcmToken(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { fcmToken } = req.body;
+    if (!fcmToken || typeof fcmToken !== 'string') {
+      return res.status(400).json({ error: 'fcmToken is required' });
+    }
+    await usersService.saveFcmToken(req.user!.id, fcmToken);
+    res.json({ success: true });
+  } catch (err) { next(err); }
+}

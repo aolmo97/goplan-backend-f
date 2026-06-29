@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import { prisma } from '../lib/prisma';
+import { sendPushNotification } from './notifications.service';
 
 let io: Server | null = null;
 
@@ -86,6 +87,16 @@ export async function swipe(userId: string, planId: string, action: 'join' | 'sk
   await addUserToChat(planId, userId);
   await emitMatchNew(planId, plan.title, plan.coverImage || '', userId, plan.creatorId);
 
+  // Notify the plan creator via FCM
+  const creator = await prisma.user.findUnique({ where: { id: plan.creatorId }, select: { fcmToken: true } });
+  if (creator?.fcmToken) {
+    await sendPushNotification(
+      creator.fcmToken,
+      'Alguien se unió a tu plan',
+      `Alguien se ha unido a tu plan ${plan.title}`
+    );
+  }
+
   return {
     matched: true,
     matchData: { planId, planName: plan.title }
@@ -141,6 +152,16 @@ export async function updateMatch(
       match.userId,
       currentUserId
     );
+
+    // Notify the requester via FCM
+    const requester = await prisma.user.findUnique({ where: { id: match.userId }, select: { fcmToken: true } });
+    if (requester?.fcmToken) {
+      await sendPushNotification(
+        requester.fcmToken,
+        'Solicitud aceptada',
+        `Tu solicitud para ${match.plan.title} fue aceptada`
+      );
+    }
   }
 
   return updated;

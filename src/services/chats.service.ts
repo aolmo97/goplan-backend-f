@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import { prisma } from '../lib/prisma';
+import { sendPushNotification } from './notifications.service';
 
 let io: Server | null = null;
 
@@ -116,6 +117,19 @@ export async function sendMessage(chatId: string, userId: string, content: strin
   };
 
   if (io) io.to(`chat:${chatId}`).emit('chat:message', dto);
+
+  // Send FCM push notifications to all chat members except the sender
+  const otherMembers = await prisma.chatMember.findMany({
+    where: { chatId, userId: { not: userId } },
+    include: { user: { select: { fcmToken: true } } }
+  });
+
+  const truncatedBody = message.content.length > 100 ? message.content.slice(0, 100) + '…' : message.content;
+  await Promise.all(
+    otherMembers
+      .filter(m => m.user.fcmToken)
+      .map(m => sendPushNotification(m.user.fcmToken!, message.sender.username, truncatedBody))
+  );
 
   return { ...dto, isMe: true };
 }
