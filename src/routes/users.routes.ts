@@ -6,7 +6,8 @@ import {
   getUserById,
   toggleFollow,
   getMyPlans,
-  getJoinedPlans
+  getJoinedPlans,
+  saveFcmToken
 } from '../controllers/users.controller';
 
 const router = Router();
@@ -15,6 +16,7 @@ router.use(authenticate);
 
 router.get('/me', getMe);
 router.put('/me', updateMe);
+router.post('/fcm-token', saveFcmToken);
 router.get('/me/plans', getMyPlans);
 router.get('/me/joined', getJoinedPlans);
 router.get('/:id', getUserById);
