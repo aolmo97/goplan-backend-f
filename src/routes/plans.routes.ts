@@ -9,7 +9,8 @@ import {
   deletePlan,
   getPlanRequests,
   getComments,
-  addComment
+  addComment,
+  deleteComment
 } from '../controllers/plans.controller';
 
 const router = Router();
@@ -20,6 +21,7 @@ router.get('/', getFeed);
 router.get('/swipe', getSwipeFeed);
 router.get('/:id/comments', getComments);
 router.post('/:id/comments', addComment);
+router.delete('/:id/comments/:commentId', deleteComment);
 router.get('/:id/requests', getPlanRequests);
 router.get('/:id', getPlanById);
 router.post('/', createPlan);

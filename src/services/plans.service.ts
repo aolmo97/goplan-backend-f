@@ -1,4 +1,20 @@
+import { v2 as cloudinary } from 'cloudinary';
 import { prisma } from '../lib/prisma';
+
+if (process.env.CLOUDINARY_API_KEY) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+  });
+}
+
+async function uploadCoverImage(image: string): Promise<string> {
+  if (!process.env.CLOUDINARY_API_KEY) return image;
+  if (!image.startsWith('data:image')) return image;
+  const result = await cloudinary.uploader.upload(image, { folder: 'goplan/covers' });
+  return result.secure_url;
+}
 
 function formatDate(date: Date): string {
   return date.toISOString().split('T')[0];
@@ -197,27 +213,31 @@ export async function createPlan(currentUserId: string, data: {
 export async function updatePlan(planId: string, currentUserId: string, data: {
   title?: string;
   description?: string;
+  category?: string;
   date?: string;
   time?: string;
   location?: string;
   locationDetails?: string;
   maxPeople?: number;
   isPrivate?: boolean;
+  coverImage?: string;
   status?: string;
 }) {
   const plan = await prisma.plan.findUniqueOrThrow({ where: { id: planId } });
-  if (plan.creatorId !== currentUserId) throw new Error('Forbidden');
+  if (plan.creatorId !== currentUserId) throw new Error('Unauthorized');
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateData: any = {};
   if (data.title) updateData.title = data.title;
   if (data.description) updateData.description = data.description;
+  if (data.category) updateData.category = data.category;
   if (data.location) updateData.location = data.location;
   if (data.locationDetails !== undefined) updateData.locationDetails = data.locationDetails;
   if (data.maxPeople) updateData.maxPeople = data.maxPeople;
   if (data.isPrivate !== undefined) updateData.isPrivate = data.isPrivate;
   if (data.status) updateData.status = data.status;
   if (data.date && data.time) updateData.date = new Date(`${data.date}T${data.time}:00.000Z`);
+  if (data.coverImage) updateData.coverImage = await uploadCoverImage(data.coverImage);
 
   const updated = await prisma.plan.update({ where: { id: planId }, data: updateData, include: PLAN_INCLUDE });
   return mapPlanToDTO(updated, currentUserId, false);
@@ -268,6 +288,13 @@ export async function addComment(planId: string, userId: string, text: string) {
     data: { planId, userId, text },
     select: COMMENT_SELECT
   });
+}
+
+export async function deleteComment(commentId: string, userId: string) {
+  const comment = await prisma.comment.findUnique({ where: { id: commentId } });
+  if (!comment) throw new Error('NotFound');
+  if (comment.userId !== userId) throw new Error('Unauthorized');
+  await prisma.comment.delete({ where: { id: commentId } });
 }
 
 export { mapPlanToDTO, PLAN_INCLUDE };

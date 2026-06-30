@@ -43,7 +43,7 @@ export async function updatePlan(req: Request, res: Response, next: NextFunction
     const plan = await plansService.updatePlan(req.params.id, req.user!.id, req.body);
     res.json(plan);
   } catch (err: any) {
-    if (err.message === 'Forbidden') return res.status(403).json({ error: err.message });
+    if (err.message === 'Unauthorized' || err.message === 'Forbidden') return res.status(403).json({ error: err.message });
     next(err);
   }
 }
@@ -82,6 +82,17 @@ export async function getPlanRequests(req: Request, res: Response, next: NextFun
     res.json(requests);
   } catch (err: any) {
     if (err.message === 'Forbidden') return res.status(403).json({ error: err.message });
+    next(err);
+  }
+}
+
+export async function deleteComment(req: Request, res: Response, next: NextFunction) {
+  try {
+    await plansService.deleteComment(req.params.commentId, req.user!.id);
+    res.status(204).send();
+  } catch (err: any) {
+    if (err.message === 'Unauthorized') return res.status(403).json({ error: err.message });
+    if (err.message === 'NotFound') return res.status(404).json({ error: 'Comment not found' });
     next(err);
   }
 }
