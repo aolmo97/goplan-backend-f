@@ -138,6 +138,27 @@ export async function leavePlan(userId: string, planId: string) {
   }
 }
 
+/**
+ * Return all PENDING match requests for plans the current user created.
+ */
+export async function getPendingRequests(creatorId: string) {
+  return prisma.match.findMany({
+    where: {
+      status: 'PENDING',
+      plan: { creatorId }
+    },
+    select: {
+      id: true,
+      userId: true,
+      planId: true,
+      createdAt: true,
+      user: { select: { username: true, avatar: true } },
+      plan: { select: { title: true, coverImage: true } }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
+}
+
 export async function updateMatch(
   matchId: string,
   currentUserId: string,

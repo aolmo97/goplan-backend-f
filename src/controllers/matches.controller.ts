@@ -34,6 +34,13 @@ export async function leavePlan(req: Request, res: Response, next: NextFunction)
   }
 }
 
+export async function getPendingRequests(req: Request, res: Response, next: NextFunction) {
+  try {
+    const requests = await matchesService.getPendingRequests(req.user!.id);
+    res.json({ requests });
+  } catch (err) { next(err); }
+}
+
 export async function updateMatch(req: Request, res: Response, next: NextFunction) {
   try {
     const { status } = req.body;
