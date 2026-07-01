@@ -128,7 +128,7 @@ export async function sendMessage(chatId: string, userId: string, content: strin
   await Promise.all(
     otherMembers
       .filter(m => m.user.fcmToken)
-      .map(m => sendPushNotification(m.user.fcmToken!, message.sender.username, truncatedBody))
+      .map(m => sendPushNotification(m.user.fcmToken!, message.sender.username, truncatedBody, { chatId }))
   );
 
   return { ...dto, isMe: true };
@@ -139,4 +139,58 @@ export async function markRead(chatId: string, userId: string) {
     where: { chatId_userId: { chatId, userId } },
     data: { lastSeenAt: new Date() }
   });
+}
+
+export async function getChatMembers(chatId: string, currentUserId: string) {
+  const membership = await prisma.chatMember.findUnique({
+    where: { chatId_userId: { chatId, userId: currentUserId } }
+  });
+  if (!membership) throw new Error('Not a member of this chat');
+
+  const members = await prisma.chatMember.findMany({
+    where: { chatId },
+    include: { user: { select: { id: true, username: true, avatar: true, city: true } } }
+  });
+
+  return members.map(m => ({
+    id: m.user.id,
+    username: m.user.username,
+    avatar: m.user.avatar || '',
+    city: m.user.city || '',
+    isMe: m.user.id === currentUserId
+  }));
+}
+
+export async function getOrCreateDirectChat(currentUserId: string, targetUserId: string) {
+  const targetUser = await prisma.user.findUniqueOrThrow({
+    where: { id: targetUserId },
+    select: { username: true }
+  });
+
+  // Find existing 1:1 chat with exactly these two members and no plan
+  const allChats = await prisma.chat.findMany({
+    where: {
+      planId: null,
+      members: { some: { userId: currentUserId } }
+    },
+    include: { members: true }
+  });
+
+  const existing = allChats.find(c =>
+    c.members.length === 2 &&
+    c.members.some(m => m.userId === targetUserId)
+  );
+
+  if (existing) return { chatId: existing.id };
+
+  const chat = await prisma.chat.create({
+    data: {
+      name: targetUser.username,
+      members: {
+        create: [{ userId: currentUserId }, { userId: targetUserId }]
+      }
+    }
+  });
+
+  return { chatId: chat.id };
 }

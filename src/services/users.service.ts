@@ -14,7 +14,7 @@ async function uploadAvatar(avatar: string): Promise<string> {
   if (!process.env.CLOUDINARY_API_KEY) return avatar;
   const isBase64 = avatar.startsWith('data:image');
   if (!isBase64) return avatar;
-  const result = await cloudinary.uploader.upload(avatar, { folder: 'goplan/avatars' });
+  const result = await cloudinary.uploader.upload(avatar, { folder: 'planmate/avatars' });
   return result.secure_url;
 }
 

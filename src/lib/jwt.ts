@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'goplan-dev-secret';
+const JWT_SECRET = process.env.JWT_SECRET || 'planmate-dev-secret';
 
 export interface JWTPayload {
   id: string;

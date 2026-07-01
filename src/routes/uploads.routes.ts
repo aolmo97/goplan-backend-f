@@ -21,7 +21,7 @@ router.post('/', authenticate, upload.single('file'), async (req: Request, res: 
   try {
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: 'goplan', resource_type: 'image' },
+        { folder: 'planmate', resource_type: 'image' },
         (error, result) => {
           if (error || !result) return reject(error ?? new Error('No result from Cloudinary'));
           resolve(result);

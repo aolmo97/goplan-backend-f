@@ -11,11 +11,11 @@ async function main() {
   // Users
   const [carlos, elena, mark, julia, sophia, pulse] = await Promise.all([
     prisma.user.upsert({
-      where: { email: 'carlos@goplan.app' },
+      where: { email: 'carlos@planmate.app' },
       update: { avatar: 'https://i.pravatar.cc/300?img=12' },
       create: {
         username: 'Carlos García',
-        email: 'carlos@goplan.app',
+        email: 'carlos@planmate.app',
         password,
         city: 'Madrid',
         role: 'USER',
@@ -24,11 +24,11 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'elena@goplan.app' },
+      where: { email: 'elena@planmate.app' },
       update: { avatar: 'https://i.pravatar.cc/300?img=5' },
       create: {
         username: 'Elena Petrova',
-        email: 'elena@goplan.app',
+        email: 'elena@planmate.app',
         password,
         city: 'Madrid',
         role: 'USER',
@@ -37,11 +37,11 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'mark@goplan.app' },
+      where: { email: 'mark@planmate.app' },
       update: { avatar: 'https://i.pravatar.cc/300?img=33' },
       create: {
         username: 'Mark Thompson',
-        email: 'mark@goplan.app',
+        email: 'mark@planmate.app',
         password,
         city: 'Austin',
         role: 'USER',
@@ -50,11 +50,11 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'julia@goplan.app' },
+      where: { email: 'julia@planmate.app' },
       update: { avatar: 'https://i.pravatar.cc/300?img=25' },
       create: {
         username: 'Julia Santos',
-        email: 'julia@goplan.app',
+        email: 'julia@planmate.app',
         password,
         city: 'Madrid',
         role: 'USER',
@@ -63,11 +63,11 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'sophia@goplan.app' },
+      where: { email: 'sophia@planmate.app' },
       update: { avatar: 'https://i.pravatar.cc/300?img=47' },
       create: {
         username: 'Sophia Rivera',
-        email: 'sophia@goplan.app',
+        email: 'sophia@planmate.app',
         password,
         city: 'Austin, Texas',
         role: 'USER',
@@ -77,11 +77,11 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'pulse@goplan.app' },
+      where: { email: 'pulse@planmate.app' },
       update: {},
       create: {
         username: 'Pulse Productions',
-        email: 'pulse@goplan.app',
+        email: 'pulse@planmate.app',
         password,
         city: 'Madrid',
         role: 'COMPANY',
@@ -334,7 +334,7 @@ async function main() {
   ]);
 
   console.log('Seed complete!');
-  console.log('Test credentials: carlos@goplan.app / elena@goplan.app / sophia@goplan.app — all password: password123');
+  console.log('Test credentials: carlos@planmate.app / elena@planmate.app / sophia@planmate.app — all password: password123');
 }
 
 main()

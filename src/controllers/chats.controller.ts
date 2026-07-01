@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as chatsService from '../services/chats.service';
+import { getChatMembers, getOrCreateDirectChat } from '../services/chats.service';
 
 export async function getChats(req: Request, res: Response, next: NextFunction) {
   try {
@@ -42,3 +43,17 @@ export async function markRead(req: Request, res: Response, next: NextFunction) 
     res.status(204).send();
   } catch (err) { next(err); }
 }
+
+export const getChatMembersHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const members = await getChatMembers(req.params.id, req.user!.id);
+    res.json(members);
+  } catch (e) { next(e); }
+};
+
+export const getOrCreateDirectChatHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const result = await getOrCreateDirectChat(req.user!.id, req.body.targetUserId);
+    res.json(result);
+  } catch (e) { next(e); }
+};

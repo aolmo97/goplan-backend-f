@@ -21,5 +21,5 @@ setChatsSocket(io);
 initSocketServer(io);
 
 httpServer.listen(PORT, () => {
-  console.log(`GoPlan API running on http://localhost:${PORT}`);
+  console.log(`PlanMate API running on http://localhost:${PORT}`);
 });

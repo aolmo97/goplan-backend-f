@@ -93,7 +93,8 @@ export async function swipe(userId: string, planId: string, action: 'join' | 'sk
     await sendPushNotification(
       creator.fcmToken,
       'Alguien se unió a tu plan',
-      `Alguien se ha unido a tu plan ${plan.title}`
+      `Alguien se ha unido a tu plan ${plan.title}`,
+      { planId }
     );
   }
 
@@ -201,7 +202,8 @@ export async function updateMatch(
       await sendPushNotification(
         requester.fcmToken,
         'Solicitud aceptada',
-        `Tu solicitud para ${match.plan.title} fue aceptada`
+        `Tu solicitud para ${match.plan.title} fue aceptada`,
+        { planId: match.plan.id }
       );
     }
   }

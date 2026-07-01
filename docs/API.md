@@ -1,4 +1,4 @@
-# GoPlan API Reference
+# PlanMate API Reference
 
 Base URL: `http://xexvhvose28zsiwrimekw50f.217.154.105.133.sslip.io/api`
 

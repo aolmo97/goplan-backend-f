@@ -27,7 +27,7 @@ const db = prisma as jest.Mocked<typeof prisma>;
 const mockUser = {
   id: 'user-1',
   username: 'testuser',
-  email: 'test@goplan.app',
+  email: 'test@planmate.app',
   password: 'hashed_password',
   role: 'USER' as const,
   avatar: null,
@@ -50,7 +50,7 @@ describe('auth.service — register', () => {
     (db.user.create as jest.Mock).mockResolvedValue(mockUser);
     (db.user.findUniqueOrThrow as jest.Mock) = jest.fn().mockResolvedValue(mockUser);
 
-    const result = await register('testuser', 'test@goplan.app', 'password123', 'Madrid');
+    const result = await register('testuser', 'test@planmate.app', 'password123', 'Madrid');
 
     expect(bcrypt.hash).toHaveBeenCalledWith('password123', 12);
     expect(db.user.create).toHaveBeenCalledWith(
@@ -64,7 +64,7 @@ describe('auth.service — register', () => {
 
   it('throws if user already exists', async () => {
     (db.user.findFirst as jest.Mock).mockResolvedValue(mockUser);
-    await expect(register('testuser', 'test@goplan.app', 'pass', 'Madrid'))
+    await expect(register('testuser', 'test@planmate.app', 'pass', 'Madrid'))
       .rejects.toThrow('User already exists');
   });
 });
@@ -77,20 +77,20 @@ describe('auth.service — login', () => {
 
   it('returns valid token on correct credentials', async () => {
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
-    const result = await login('test@goplan.app', 'password123');
+    const result = await login('test@planmate.app', 'password123');
     expect(result.token).toBe('mock_token');
     expect(result.user.name).toBe('testuser');
   });
 
   it('throws on wrong password', async () => {
     (bcrypt.compare as jest.Mock).mockResolvedValue(false);
-    await expect(login('test@goplan.app', 'wrongpass'))
+    await expect(login('test@planmate.app', 'wrongpass'))
       .rejects.toThrow('Invalid credentials');
   });
 
   it('throws if user not found', async () => {
     (db.user.findUnique as jest.Mock).mockResolvedValue(null);
-    await expect(login('nobody@goplan.app', 'pass'))
+    await expect(login('nobody@planmate.app', 'pass'))
       .rejects.toThrow('Invalid credentials');
   });
 });

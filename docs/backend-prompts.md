@@ -1,4 +1,4 @@
-# GoPlan — Prompts de Backend para Claude Code
+# PlanMate — Prompts de Backend para Claude Code
 # Basados en el análisis del prototipo frontend (front-test)
 
 Usa estos prompts en orden. Cada uno es autónomo y referencia
@@ -8,7 +8,7 @@ los tipos exactos del frontend (`src/types.ts`).
 PROMPT 0 — CONTEXTO INICIAL (pegar siempre primero)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Tengo un prototipo frontend React de GoPlan (app social para encontrar
+Tengo un prototipo frontend React de PlanMate (app social para encontrar
 compañía en planes reales). Debes construir el backend Express + Prisma
 que lo alimente. Lee CLAUDE.md antes de empezar.
 

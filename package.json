@@ -1,5 +1,5 @@
 {
-  "name": "@goplan/api",
+  "name": "@planmate/api",
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx watch src/index.ts",

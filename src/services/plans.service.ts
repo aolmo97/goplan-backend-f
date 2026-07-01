@@ -12,7 +12,7 @@ if (process.env.CLOUDINARY_API_KEY) {
 async function uploadCoverImage(image: string): Promise<string> {
   if (!process.env.CLOUDINARY_API_KEY) return image;
   if (!image.startsWith('data:image')) return image;
-  const result = await cloudinary.uploader.upload(image, { folder: 'goplan/covers' });
+  const result = await cloudinary.uploader.upload(image, { folder: 'planmate/covers' });
   return result.secure_url;
 }
 
